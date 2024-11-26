@@ -1,14 +1,28 @@
 [package]
 name = "sub_crawler"
+<<<<<<< HEAD
 version = "0.1.1"
 edition = "2021"
 authors = ["Sylar"]
 description = "A subdomain reconnaissance tool"
+=======
+description = "A fast, flexible subdomain enumeration tool"
+readme = "README.md"
+version = "1.0.0"
+edition = "2021"
+authors = ["Sylar"]
+>>>>>>> 8511595 (Updated version of the project)
 license = "MIT"
 repository = "https://github.com/sylar-my/sub_crawler/"
 keywords = ["subdomain", "recon", "network", "scanner"]
 
 [dependencies]
+<<<<<<< HEAD
 clap = { version = "4.4", features = ["derive"] }
 colored = "2.0"
 indicatif = "0.17"
+=======
+clap = { version = "4.x", features = ["derive", "env"] }
+colored = "2.1.0"
+indicatif = "0.17.9"
+>>>>>>> 8511595 (Updated version of the project)
