@@ -152,7 +152,7 @@ fn load_wordlist(path: &Option<String>) -> Result<Vec<String>, std::io::Error> {
 fn check_subdomain(subdomain: &str, domain: &str) -> Option<String> {
     let hostname = format!("{}.{}", subdomain, domain);
     
-
+}
 
 fn load_wordlist(
     wordlist_type: &WordlistType,
