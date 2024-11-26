@@ -1,7 +1,7 @@
 [package]
 name = "sub_crawler"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 authors = ["Sylar"]
 description = "A subdomain reconnaissance tool"
 license = "MIT"
