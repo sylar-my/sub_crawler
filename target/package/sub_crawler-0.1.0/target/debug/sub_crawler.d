@@ -1,1 +1,0 @@
-/home/sylar/Documents/AI\ scripts/Rust/sub_crawler/target/package/sub_crawler-0.1.0/target/debug/sub_crawler: /home/sylar/Documents/AI\ scripts/Rust/sub_crawler/target/package/sub_crawler-0.1.0/src/main.rs
