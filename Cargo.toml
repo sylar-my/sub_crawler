@@ -1,0 +1,14 @@
+[package]
+name = "sub_crawler"
+version = "0.1.0"
+edition = "2024"
+authors = ["Sylar"]
+description = "A subdomain reconnaissance tool"
+license = "MIT"
+repository = "https://github.com/sylar-my/sub_crawler/"
+keywords = ["subdomain", "recon", "network", "scanner"]
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+colored = "2.0"
+indicatif = "0.17"
