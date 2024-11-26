@@ -5,7 +5,6 @@ use std::net::ToSocketAddrs;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 use std::thread;
-use std::time::Instant;
 
 use clap::{Parser, ValueEnum};
 use colored::*;
