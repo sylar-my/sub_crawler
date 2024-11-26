@@ -2,38 +2,38 @@ use std::collections::HashSet;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::net::ToSocketAddrs;
-<<<<<<< HEAD
-=======
+
+
 use std::path::{Path, PathBuf};
->>>>>>> 8511595 (Updated version of the project)
+
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Instant;
 
-<<<<<<< HEAD
+
 use clap::Parser;
-=======
+
 use clap::{Parser, ValueEnum};
->>>>>>> 8511595 (Updated version of the project)
+
 use colored::*;
 use indicatif::{ProgressBar, ProgressStyle};
 
 // Default wordlist of subdomains
 const DEFAULT_WORDLIST: &[&str] = &[
-<<<<<<< HEAD
+
     "www", "mail", "remote", "blog", "webmail", "server", "ns1", "ns2", 
     "smtp", "secure", "vpn", "m", "shop", "ftp", "mail2", "test", "portal", 
-=======
+
     "www", "mail", "remote", "blog", "webmail", "server", "ns1", "ns2",
     "smtp", "secure", "vpn", "m", "shop", "ftp", "mail2", "test", "portal",
->>>>>>> 8511595 (Updated version of the project)
+
     "ns", "ww1", "host", "support", "dev", "web", "bbs", "ww42", "mx", "email",
     "cloud", "1", "2", "forum", "admin", "api", "cdn", "stage", "gw", "dns",
     "download", "demo", "dashboard", "app", "beta", "auth", "cms", "testing"
 ];
 
-<<<<<<< HEAD
-=======
+
+
 // Potential SecLists wordlist locations
 const POTENTIAL_WORDLIST_PATHS: &[&str] = &[
     "/usr/share/wordlists/seclists/Discovery/DNS/",
@@ -56,7 +56,7 @@ enum WordlistType {
     Custom,
 }
 
->>>>>>> 8511595 (Updated version of the project)
+
 /// Subdomain Reconnaissance Tool
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -65,11 +65,11 @@ struct Args {
     #[arg(index(1))]
     domain: String,
 
-<<<<<<< HEAD
+
     /// Path to custom wordlist file
     #[arg(short, long)]
     wordlist: Option<String>,
-=======
+
     /// Wordlist type to use
     #[arg(short, long, value_enum, default_value_t = WordlistType::Light)]
     wordlist: WordlistType,
@@ -81,18 +81,18 @@ struct Args {
     /// Path to custom wordlist file (used only when wordlist type is Custom)
     #[arg(short, long, requires = "custom")]
     custom_wordlist: Option<String>,
->>>>>>> 8511595 (Updated version of the project)
+
 
     /// Number of threads to use
     #[arg(short, long, default_value_t = 10)]
     threads: usize,
 }
 
-<<<<<<< HEAD
+
 fn print_banner() {
     let banner = r#"
 ███████╗██╗   ██╗██████╗       ██████╗██████╗  █████╗ ██╗    ██╗██╗     ███████╗██████╗ 
-=======
+
 /// Find the first existing SecLists wordlist directory
 fn find_seclists_path(custom_path: &Option<String>) -> Option<PathBuf> {
     // First, check if a custom path was provided
@@ -117,7 +117,7 @@ fn find_seclists_path(custom_path: &Option<String>) -> Option<PathBuf> {
 fn print_banner() {
     let banner = r#"
 ███████╗██╗   ██╗██████╗       ██████╗██████╗  █████╗ ██╗    ██╗██╗     ███████╗██████╗
->>>>>>> 8511595 (Updated version of the project)
+
 ██╔════╝██║   ██║██╔══██╗     ██╔════╝██╔══██╗██╔══██╗██║    ██║██║     ██╔════╝██╔══██╗
 ███████╗██║   ██║██████╔╝     ██║     ██████╔╝███████║██║ █╗ ██║██║     █████╗  ██████╔╝
 ╚════██║██║   ██║██╔══██╗     ██║     ██╔══██╗██╔══██║██║███╗██║██║     ██╔══╝  ██╔══██╗
@@ -127,10 +127,10 @@ fn print_banner() {
     println!("{}", banner.blue());
     println!("{}", "                 [ By Sylar ]".red());
     println!("{}", "         🔍 Subdomain Reconnaissance Tool 🎯".green());
-    println!("============================================================================================");
+    println!("=");
 }
 
-<<<<<<< HEAD
+
 fn load_wordlist(path: &Option<String>) -> Result<Vec<String>, std::io::Error> {
     match path {
         Some(file_path) => {
@@ -152,7 +152,7 @@ fn load_wordlist(path: &Option<String>) -> Result<Vec<String>, std::io::Error> {
 fn check_subdomain(subdomain: &str, domain: &str) -> Option<String> {
     let hostname = format!("{}.{}", subdomain, domain);
     
-=======
+
 
 fn load_wordlist(
     wordlist_type: &WordlistType,
@@ -225,7 +225,7 @@ fn load_wordlist_from_file(file_path: &str) -> Result<Vec<String>, std::io::Erro
 fn check_subdomain(subdomain: &str, domain: &str) -> Option<String> {
     let hostname = format!("{}.{}", subdomain, domain);
 
->>>>>>> 8511595 (Updated version of the project)
+
     // Attempt to resolve the hostname
     match format!("{}:80", hostname).to_socket_addrs() {
         Ok(_) => Some(hostname),
@@ -247,11 +247,11 @@ fn scan_subdomains(domain: &str, wordlist: &[String], max_threads: usize) -> Vec
 
     // Split wordlist into chunks for threading
     let chunk_size = (wordlist.len() + max_threads - 1) / max_threads;
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 8511595 (Updated version of the project)
+    
+
+
+
     for chunk in wordlist.chunks(chunk_size) {
         let chunk = chunk.to_vec();
         let domain = domain.to_string();
@@ -290,18 +290,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Parse command-line arguments
     let args = Args::parse();
 
-<<<<<<< HEAD
+
     // Load wordlist
     let wordlist = load_wordlist(&args.wordlist)?;
 
     println!("{}", format!("Target Domain: {}", args.domain).yellow());
-=======
+
     // Load wordlist based on user selection
     let wordlist = load_wordlist(&args.wordlist, &args.custom_wordlist, &args.seclists_path)?;
 
     println!("{}", format!("Target Domain: {}", args.domain).yellow());
     println!("{}", format!("Wordlist Type: {:?}", args.wordlist).yellow());
->>>>>>> 8511595 (Updated version of the project)
+
     println!("{}", format!("Wordlist Size: {} entries", wordlist.len()).yellow());
     println!("{}", "Starting scan...".green());
 
@@ -312,7 +312,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let found_domains = scan_subdomains(&args.domain, &wordlist, args.threads);
 
     // Print results
-    println!("\n==================================================");
+    println!("\n=");
     println!("{}", "Scan Results".cyan());
     println!("{}", format!("Scan completed in {:.2} seconds", start_time.elapsed().as_secs_f64()).green());
     println!("{}", format!("Found {} subdomains:", found_domains.len()).green());
@@ -323,7 +323,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 8511595 (Updated version of the project)
+
+
+
