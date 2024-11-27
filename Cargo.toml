@@ -1,6 +1,6 @@
 [package]
 name = "sub_crawler"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 authors = ["Sylar"]
 description = "A fast, flexible subdomain enumeration tool"

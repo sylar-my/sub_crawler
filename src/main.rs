@@ -183,6 +183,14 @@ fn check_subdomain(subdomain: &str, domain: &str) -> Option<String> {
 }
 
 fn scan_subdomains(domain: &str, wordlist: &[String], max_threads: usize) -> Vec<String> {
+    // Enhanced thread logging
+    let actual_threads = std::cmp::min(max_threads, wordlist.len());
+    println!("{}", format!("🧵 Active Threads: {}", actual_threads).blue());
+    println!("{}", format!("🧩 Chunk Size: {} entries per thread",
+        (wordlist.len() + actual_threads - 1) / actual_threads
+    ).blue());
+
+
     let found_domains = Arc::new(Mutex::new(HashSet::new()));
     let progress_bar = ProgressBar::new(wordlist.len() as u64);
     progress_bar.set_style(
@@ -216,9 +224,11 @@ fn scan_subdomains(domain: &str, wordlist: &[String], max_threads: usize) -> Vec
         handles.push(handle);
     }
 
-    // Wait for all threads to complete
-    for handle in handles {
-        handle.join().unwrap();
+    // Improved thread joining with error handling
+    for (i, handle) in handles.into_iter().enumerate() {
+        if let Err(_) = handle.join() {
+            eprintln!("Thread {} failed to complete", i);
+        }
     }
 
     progress_bar.finish_with_message("Scan complete!");
@@ -235,19 +245,40 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Parse command-line arguments
     let args = Args::parse();
 
+    // Validate thread count
+    let thread_count = match args.threads {
+        0 => {
+            eprintln!("⚠️ {} Thread count cannot be zero. Defaulting to 1.", "Warning:".yellow());
+            1
+        },
+        threads if threads > 64 => {
+            eprintln!("⚠️ {} Maximum thread count is 64. Capping at 64.", "Warning:".yellow());
+            64
+        },
+        threads => threads
+    };
+
     // Load wordlist based on user selection
     let wordlist = load_wordlist(&args.wordlist, &args.custom_wordlist, &args.seclists_path)?;
 
     println!("{}", format!("Target Domain: {}", args.domain).yellow());
     println!("{}", format!("Wordlist Type: {:?}", args.wordlist).yellow());
     println!("{}", format!("Wordlist Size: {} entries", wordlist.len()).yellow());
+
+    // Add detailed thread information
+    println!("{}", format!("Thread Configuration:").yellow());
+    println!("{}", format!("  └─ Total Threads: {}", thread_count).blue());
+    println!("{}", format!("  └─ Expected Chunks: {}",
+        (wordlist.len() + thread_count - 1) / thread_count
+    ).blue());
+
     println!("{}", "Starting scan...".green());
 
     // Start timing
     let start_time = Instant::now();
 
-    // Scan subdomains
-    let found_domains = scan_subdomains(&args.domain, &wordlist, args.threads);
+    // Scan subdomains with validated thread count
+    let found_domains = scan_subdomains(&args.domain, &wordlist, thread_count);
 
     // Print results
     println!("\n==================================================");
